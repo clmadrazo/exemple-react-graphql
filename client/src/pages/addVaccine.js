@@ -1,6 +1,8 @@
 import React from 'react';
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import getDoseTypes from "../queries/getDoseTypes"; 
+import addVaccine from "../queries/addVaccine";
+import getAllVaccines from "../queries/getAllVaccines"
 
 class AddVacine extends React.Component {
 
@@ -12,6 +14,7 @@ class AddVacine extends React.Component {
       doseType: 'unique'
     };
     this.onChange = this.onChange.bind(this);
+    this.onHandleSubmit = this.onHandleSubmit.bind(this);
   }
 
   onChange (event) {
@@ -29,6 +32,22 @@ class AddVacine extends React.Component {
         break;
     }
     this.setState(state);
+  }
+
+  onHandleSubmit(event) {
+    event.preventDefault();
+    const { addVaccine } = this.props;
+    const { title, description, doseType } = this.state;
+    addVaccine({
+      variables: {
+        title,
+        description,
+        doseType
+      },
+      refetchQueries: [{ query: getAllVaccines }]
+    }).then(() => {
+      this.props.history.push("/");
+    })
   }
 
   renderForm() {
@@ -68,4 +87,7 @@ class AddVacine extends React.Component {
   }
 }
 
-export default graphql(getDoseTypes, {name: "doseType"} )(AddVacine);
+export default compose(
+  graphql(getDoseTypes, {name: "doseType"} ),
+  graphql(addVaccine, {name: "addVaccine"} )
+)(AddVacine);

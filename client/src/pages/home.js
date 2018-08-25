@@ -9,13 +9,15 @@ class Home extends React.PureComponent{
     )
   }
 
-  renderVaccinestList(vaccines) {
+  renderVaccinestList() {
+    const { vaccines } = this.props;
+
     return (
       <div> 
         <div>Lista</div>
         <ul>
           {
-            vaccines.map((vaccine, index) => {
+            vaccines.getAllVaccines.map((vaccine, index) => {
               return (
                 <li key={index}>{vaccine.title} - {vaccine.description}</li>
               );
@@ -30,7 +32,7 @@ class Home extends React.PureComponent{
     console.log(this.props);
     const { vaccines } = this.props;
     
-    return (vaccines.loading) ? this.renderLoading() : this.renderVaccinestList(vaccines.getAllVaccines)
+    return (vaccines.loading) ? this.renderLoading() : this.renderVaccinestList();
 
   }
 };

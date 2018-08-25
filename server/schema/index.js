@@ -6,7 +6,7 @@ type Vaccine {
     id: ID!
     title: String!
     description: String!
-    doseType: DoseType!
+    doseType: DoseType
 }
 
 enum DoseType {
@@ -28,7 +28,7 @@ const rootQuery = `
 
 const mutation = `
     type Mutation {
-        addVaccine(title: String!, description: String!): Vaccine
+        addVaccine(title: String!, description: String!, doseType: DoseType!): Vaccine
     }
 `;
 
